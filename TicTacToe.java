@@ -102,7 +102,7 @@ public class TicTacToe {
 		return "o";
 	}
 	
-	// detecting duplicates
+	//detecting duplicates
 	public boolean duplicateMap(String word) {
 		char[] chars = word.toCharArray();
         
@@ -126,16 +126,20 @@ public class TicTacToe {
 		Scanner input = new Scanner(System.in);
 		boolean end = false;
 		String[][]board = ttt.getBoard(); //tying the boards to each other (terrible but kept to make it easy on me)
-		
-		ttt.getInstructions();
-		while(!end) {
-			int player = input.nextInt();
-			ttt.makeChanges(board, player);
-			ttt.seeBoard(board);
-			System.out.println("*******");
-			end = ttt.checkEnd(board);
+		try {
+			ttt.getInstructions();
+			while(!end) {
+				int player = input.nextInt();
+				ttt.makeChanges(board, player);
+				ttt.seeBoard(board);
+				System.out.println("*******");
+				end = ttt.checkEnd(board);
+			}
+			System.out.println(results);
+			input.close();
 		}
-		System.out.println(results);
-		input.close();
+		catch(Exception e) {
+			System.out.println("that's wrong");
+		}
 	}
 }

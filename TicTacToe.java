@@ -30,26 +30,35 @@ public class TicTacToe {
 		}
 	}
 	
-	//checking for how the game ends
+	//checking for how the game ends...please optimize this!
 	public boolean checkEnd(String[][] board) {
-		if (count < 10)
-			if (board[2][0]==board[2][1]&&board[2][1]==board[2][2]|| //123
-				board[1][0]==board[1][1]&&board[1][1]==board[1][2]|| //456
-				board[0][0]==board[0][1]&&board[0][1]==board[0][2]|| //789
-				board[2][0]==board[1][0]&&board[1][0]==board[0][0]|| //147
-				board[2][1]==board[1][1]&&board[1][1]==board[0][1]|| //258
-				board[2][2]==board[1][2]&&board[1][2]==board[0][2]|| //369
-				board[2][0]==board[1][1]&&board[1][1]==board[0][2]|| //159
-				board[2][2]==board[1][1]&&board[1][1]==board[0][0]){ //357
-				results = getXO() + "wins";
+			if( (board[2][0]+board[2][1]+board[2][2]).equals("xxx")|| //123
+				(board[1][0]+board[1][1]+board[1][2]).equals("xxx")|| //456
+				(board[0][0]+board[0][1]+board[0][2]).equals("xxx")|| //789
+				(board[2][0]+board[1][0]+board[0][0]).equals("xxx")|| //147
+				(board[2][1]+board[1][1]+board[0][1]).equals("xxx")|| //258
+				(board[2][2]+board[1][2]+board[0][2]).equals("xxx")|| //369
+				(board[2][0]+board[1][1]+board[0][2]).equals("xxx")|| //159
+				(board[2][2]+board[1][1]+board[0][0]).equals("xxx")|| //357
+				
+				(board[2][0]+board[2][1]+board[2][2]).equals("ooo")|| //123
+				(board[1][0]+board[1][1]+board[1][2]).equals("ooo")|| //456
+				(board[0][0]+board[0][1]+board[0][2]).equals("ooo")|| //789
+				(board[2][0]+board[1][0]+board[0][0]).equals("ooo")|| //147
+				(board[2][1]+board[1][1]+board[0][1]).equals("ooo")|| //258
+				(board[2][2]+board[1][2]+board[0][2]).equals("ooo")|| //369
+				(board[2][0]+board[1][1]+board[0][2]).equals("ooo")|| //159
+				(board[2][2]+board[1][1]+board[0][0]).equals("ooo")){ //357
+				count--;
+				results = getXO() + " wins";
 				return true;
 				}
-			else {
+			if(count==9) {
 				results = "draw";
 				return true;
-				}
-		return false;
-	} 
+			}
+			return false;
+	}
 	
 	//making changes to the board
 	public void makeChanges(String[][] board, int player) {
@@ -86,8 +95,10 @@ public class TicTacToe {
 			int player = input.nextInt();
 			ttt.makeChanges(board, player);
 			ttt.seeBoard(board);
-			//end = ttt.checkEnd(board);
+			System.out.println("*******");
+			end = ttt.checkEnd(board);
 		}
+		System.out.println(results);
 		input.close();
 	}
 }

@@ -76,7 +76,7 @@ public class TicTacToe {
 	//making changes to the board... optimize this too
 	public void makeChanges(String[][] board, int player) {
 		checker+=player;
-		if(duplicateMap(checker)) {
+		if(duplicateMap(checker)||player>9||player<1) {
 			System.out.println("try again");
 			checker=checker.substring(0,checker.length()-1);
 		}else {
@@ -126,6 +126,7 @@ public class TicTacToe {
 		Scanner input = new Scanner(System.in);
 		boolean end = false;
 		String[][]board = ttt.getBoard(); //tying the boards to each other (terrible but kept to make it easy on me)
+		
 		try {
 			ttt.getInstructions();
 			while(!end) {

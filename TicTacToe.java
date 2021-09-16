@@ -1,9 +1,14 @@
 package game;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.Set;
 
 public class TicTacToe {
+	Random rand = new Random();
 	public static byte count = 0;
 	public static String results = "";
 	public static String checker = "";
@@ -31,16 +36,6 @@ public class TicTacToe {
 				System.out.print(col + " ");
 			System.out.println();
 		}
-	}
-	
-	//checking for duplicates
-	public boolean checkInput(int player) {
-		checker+=player;
-		if (duplicateMap(checker)) {
-			System.out.println("try again");
-			return true;
-		}
-		return false;
 	}
 	
 	//checking for how the game ends...please optimize this!
@@ -78,8 +73,8 @@ public class TicTacToe {
 		checker+=player;
 		if(duplicateMap(checker)||player>9||player<1) {
 			System.out.println("try again");
-			checker=checker.substring(0,checker.length()-1);
-		}else {
+			checker=checker.substring(0,checker.length()-Integer.toString(player).length());
+		} else {
 			String xo = getXO();
 			if(player == 1) board[2][0] = xo;
 			if(player == 2) board[2][1] = xo;
@@ -120,6 +115,27 @@ public class TicTacToe {
         return false;
 	}
 	
+	public int getCpu() {
+		int cpu = 0;
+		Integer[] collection = {1,2,3,4,5,6,7,8,9};
+		int[] chosen = checker.chars().map(c -> c - '0').toArray(); // converting a string to int[]
+		Integer[] taken = Arrays.stream(chosen).boxed().toArray(Integer[]::new); //converting int[] to integer[]
+		
+		Set<Integer> setMain = new HashSet<>(Arrays.asList(collection));
+		Set<Integer> set2 = new HashSet<>(Arrays.asList(taken));
+		
+		setMain.removeAll(set2);
+		
+		int random = rand.nextInt(setMain.size());
+		int i = 0;
+		for(Integer element : setMain) {
+			if(i==random)
+			cpu = element;
+			i++;
+		}
+		return cpu;
+	}
+	
 	//main method where we can test the game
 	public static void main(String[] args) {
 		TicTacToe ttt = new TicTacToe();
@@ -130,11 +146,27 @@ public class TicTacToe {
 		try {
 			ttt.getInstructions();
 			while(!end) {
+				//player
 				int player = input.nextInt();
 				ttt.makeChanges(board, player);
 				ttt.seeBoard(board);
 				System.out.println("*******");
 				end = ttt.checkEnd(board);
+				//System.out.println(checker);
+				
+				if(end == true)
+					break;
+				if(count%2==1) {
+				//CPU
+				System.out.println("please wait...");
+				Thread.sleep(500);
+				int computer = ttt.getCpu();
+				ttt.makeChanges(board, computer);
+				ttt.seeBoard(board);
+				System.out.println("*******");
+				end = ttt.checkEnd(board);
+				//System.out.println(checker);
+				}
 			}
 			System.out.println(results);
 			input.close();
@@ -143,4 +175,5 @@ public class TicTacToe {
 			System.out.println("that's wrong");
 		}
 	}
+	
 }
